@@ -7,7 +7,6 @@
 #include <time.h>
 #include <pthread.h>
 
-
 #define DEV_NAME "/dev/tty.usbmodem14433"
 #define BAUD_RATE B9600
 #define BUFF_SIZE 4096
@@ -22,7 +21,9 @@ void *func_thread(void *p) {
   //printf("start %d\n", *(int*)p);
 
   while(1) {
-    while (0 == (len = read(fd, buffer, BUFF_SIZE))) {}; // waiting for inputs
+    while (0 == (len = read(fd, buffer, BUFF_SIZE))) {
+      usleep(100);
+    }; // waiting for inputs
     if(len < 0) { // I/O error
       printf("I/O error\n");
       exit(2);
@@ -32,6 +33,31 @@ void *func_thread(void *p) {
     }
   }
   return 0;
+}
+
+int kbhit(void)
+{
+    struct termios oldt, newt;
+    int ch;
+    int oldf;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+    oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+    fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+    ch = getchar();
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+    fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+    if (ch != EOF) {
+        ungetc(ch, stdin);
+        return 1;
+    }
+    return 0;
 }
 
 void serial_init(int fd) {
@@ -66,11 +92,12 @@ int main(int argc, char **argv) {
   pthread_t pthread;
   pthread_create( &pthread, NULL, &func_thread, &b);
 
-    // main loop
+  // main loop
   while(1) {
-    char c = getchar();
-    write(fd, &c, 1);
-    //sleep(1);
+    if (kbhit()) {
+      char c = getchar();
+      write(fd, &c, 1);
+    }
   }
 
 }
