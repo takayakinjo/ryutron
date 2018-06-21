@@ -1,4 +1,5 @@
 # ryutron
-Ryutron, the 1/48 humanoid robot
+Ryutron, the 1/4.8 humanoid robot
 
-[SubSystem](https://os.mbed.com/compiler/#nav:/Ryutron;){:target="_blank"}
+
+<a href="https://os.mbed.com/compiler/#nav:/Ryutron;" target="_blank">mbed Subsystem</a>
