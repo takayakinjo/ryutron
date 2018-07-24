@@ -7,7 +7,7 @@
 #include <time.h>
 #include <pthread.h>
 
-#define DEV_NAME "/dev/tty.usbmodem1423"
+#define DEV_NAME "/dev/tty.usbmodem14413"
 #define BAUD_RATE B9600
 #define BUFF_SIZE 4096
 
@@ -118,18 +118,51 @@ int main(int argc, char **argv) {
   pthread_create( &pthread, NULL, &func_thread, &b);
 
   send_command("R28");
-  //send_command("R1 FB1 t1000");
+  //  send_command("R1 TW-7");
 
+#if 0
   while(1) {
-    send_command("R1 YL0 XL-4 XR-4 t1000");
+    send_command("R1 YL0 XL-3 XR-3 t2000");
+    send_command("R1 YR0 ZR50 t500");
+    send_command("R1 YR0 ZR0 t500");
+    send_command("R1 YR0 XL3 XR3 t2000");
+    send_command("R1 YL0 ZL50 t500");
+    send_command("R1 YL0 ZL0 t500");
+  }
+  
+  while(1) {
+    send_command("R1 XL2 XR2 YL-10 YR10 ZR0 t500");
+    send_command("R1 XL4 XR4 YL0 YR0 ZL50 t400");
+    send_command("R1 XL-2 XR-2 YL10 YR-10 ZL0 t500");
+    send_command("R1 XL-4 XR-4 YL0 YR0 ZR50 t400");
+  }
+  while(1) {
+    send_command("R1 YL-20 YR20 ZR0 t500");
+    send_command("R1 XL3 XR3 YL0 YR0 ZL60 t500");
+    send_command("R1 YL20 YR-20 ZL0 t500");
+    send_command("R1 XL-3 XR-3 YL0 YR0 ZR60 t500");
+  }
+#endif
+  while(1) {
+    send_command("R1 XL2 XR2 t1000");
+    send_command("R1 XL5 XR5 ZL40 t1000");
+    send_command("R1 XL2 XR2 ZL0 YL0 YR0 t1000");
+    //send_command("R1 YL0 YR-20 t1000");
+    send_command("R1 XL-1 XR-1 t1000");
+    send_command("R1 XL-3 XR-3 ZR40 t1000");
+    send_command("R1 XL2 XR2 ZR0 YL0 YR0 t1000");
+    //send_command("R1 YL-20 YR0 t1000");
+  }
+  while(1) {
+    send_command("R1 YL0 XL-4 XR-4 t1500");
     send_command("R1 YR0 ZR60 t1500");
     send_command("R1 XL0 XR0 ZR0 YL-10 YR20 t1500");
-    send_command("R1 XL2 XR2 t1000");
+    send_command("R1 XL2 XR2 t1500");
     //send_command("R1 YR0");
-    send_command("R1 YR0 XL4 XR4 t1000");
+    send_command("R1 YR0 XL4 XR4 t1500");
     send_command("R1 YL0 ZL60 t1500");
     send_command("R1 XL0 XR0 ZL0 YR-10 YL20 t1500");
-    send_command("R1 XL-1 XR-1 t1000");
+    send_command("R1 XL-1 XR-1 t1500");
     //send_command("R1 YL0");
   }
 
